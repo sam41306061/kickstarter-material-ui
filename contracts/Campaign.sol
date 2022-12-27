@@ -1,21 +1,35 @@
-//SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
-
 import "hardhat/console.sol";
 
-// contract CampaginFactory {
-
-// }
 
 contract Campaign {
-    string public name = "My Campagin 1";
-    uint256 public value = 18;
-    // address public recipient = '0x90e2b94532734E2999D4919Ea1b5263Bf35d4B0d';
-    // bool public complete = true;
-    // uint256 public approvalCount = 1;
+    // string public description;
+    // address public recipient;
+    // bool public complete;
+    // uint approvalCount;
+    // uint value;
+     
+    //variables for contract
+    address public manager;
+    uint public minimumContribution;
+    address[] public approvers; 
 
-constructor(string memory _name, uint256 _value){
-    name = _name;
-    value = _value;
+    // Campgain setup
+    constructor(uint minimum) public {
+         manager = msg.sender;
+         minimumContribution = minimum;
+    }
+    // contribute
+    function contribute() public payable{
+        require(msg.value > minimumContribution);
+        
+        approvers.push(msg.sender);
+    }
+    // createRequest
+    //approveRequest
+    //finalizeRequest
+  
 }
-}
+
+
+
