@@ -1,87 +1,88 @@
 const { expect } = require("chai");
+const { ethers } = require("hardhat");
 
-describe("Campaign", function() {
+describe('Campaign', () => {
   let Campaign;
   let campaign;
   let owner;
   let addr1;
   let addr2;
-  let addrs;
 
-  beforeEach(async function() {
+  beforeEach(async () => {
+    [owner, addr1, addr2] = await ethers.getSigners();
+
     Campaign = await ethers.getContractFactory("Campaign");
-    [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
-
     campaign = await Campaign.deploy(100, owner.address);
+
     await campaign.deployed();
   });
 
-  describe("Deployment", function() {
-    it("Should set the right owner and minimumContribution", async function() {
+  // check that the contract deployed
+  describe("Deployment", () => {
+    it("Should set the right owner", async () => {
       expect(await campaign.manager()).to.equal(owner.address);
+    });
+
+    it("Should set the minimum contribution", async () => {
       expect(await campaign.minimumContribution()).to.equal(100);
     });
   });
 
-  describe("Contribute", function() {
-    it("Should add the sender to the approvers list", async function() {
-      await campaign.contribute({ value: 200 });
-      expect(await campaign.approvers(0)).to.equal(owner.address);
+  //checks that an approver can contribue, makes sure the mapping is updated
+  describe("Contribute", () => {
+    it("Should accept contributions", async () => {
+      await campaign.connect(addr1).contribute({ value: 150 });
+      expect(await campaign.approvers(addr1.address)).to.equal(true);
+      expect(await campaign.approversCount()).to.equal(1);
     });
 
-    it("Should throw an error if contribution amount is less than minimum", async function() {
-      await expect(campaign.contribute({ value: 50 })).to.be.revertedWith("Contribution amount is less than minimum");
-    });
-  });
-
-  describe("Create Request", function() {
-    it("Should create a request", async function() {
-      await campaign.contribute({ value: 200 });
-      await campaign.createRequest("Computer system update", 150, addr1.address);
-
-      const request = await campaign.requests(0);
-      expect(request.description).to.equal("Computer system update");
-      expect(request.value).to.equal(150);
-      expect(request.recipient).to.equal(addr1.address);
-      expect(request.complete).to.equal(false);
-      expect(request.approvalCount).to.equal(0);
-    });
-
-    it("Should throw an error if value is greater than the contract balance", async function() {
-      await expect(campaign.createRequest("Computer system update", 500, addr1.address)).to.be.revertedWith("Not enough funds available");
+    it("Should reject contributions below the minimum amount", async () => {
+      await expect(campaign.connect(addr1).contribute({ value: 50 })).to.be.revertedWith(
+        "Contribution amount is less than minimum"
+      );
+      expect(await campaign.approversCount()).to.equal(0);
     });
   });
 
-  // describe("Approve Request", function() {
-  //   it("Should approve a request", async function() {
-  //     await campaign.contribute({ value: 200 });
-  //     await campaign.createRequest("Computer system update", 150, addr1.address);
 
-  //     await campaign.approveRequest(0);
+describe("Create Request", () => {
+  beforeEach(async () => {
+    await campaign.connect(addr1).contribute({ value: 200 });
+    await campaign.connect(addr2).contribute({ value: 200 });
 
-  //     const request = await campaign.requests(0);
-  //     expect(request.approvals[owner.address]).to.equal(true);
-  //     expect(request.approvalCount).to.equal(1);
-  //   });
+    await campaign
+      .connect(owner)
+      .createRequest("Test Request", 200, addr1.address, 0);
+  });
+
+  it("Should transfer funds and mark request as complete", async function () {
+    await campaign.connect(addr1).approverRequest(400, 1, "");
+    await campaign.connect(addr2).approverRequest(400, 2, "");
+
+    const initialBalance = await ethers.provider.getBalance(addr1.address);
+    await campaign.connect(owner).finalizeRequest(0);
+    const finalBalance = await ethers.provider.getBalance(addr1.address);
+
+    expect(finalBalance.sub(initialBalance)).to.equal(400);
+    expect(await campaign.requests(0)).to.deep.equal({
+      id: 0,
+      description: "Test Request",
+      value: 400,
+      recipient: addr1.address,
+      complete: true,
+      approvalCount: 2,
+    });
+  });
+
+  // it("Should revert if not enough approvers", async function () {
+  //   await campaign.connect(addr1).approverRequest(400, 1, "");
+  //   await expect(campaign.connect(owner).finalizeRequest(0)).to.be.revertedWith(
+  //     "Request has not been approved by enough approvers"
+  //   );
+  // });
+  // it("Should revert if request is already complete", async ()=> {
+
   // });
 
-  // describe("Finalize Request", function() {
-  //   it("Should finalize a request", async function() {
-  //     await campaign.contribute({ value: 200 });
-  //     await campaign.createRequest("Buy a new laptop", 150, addr1.address);
-  //     await campaign.approveRequest(0);
-  //     await campaign.finalizeRequest(0);
-
-  //     const request = await campaign.requests(0);
-  //     expect(request.complete).to.equal(true);
-  //   });
-
-  //   it("Should throw an error if request has not been approved by more than half of the approvers", async function() {
-  //     await campaign.contribute({ value: 200 });
-  //     await campaign.createRequest("Buy a new laptop", 150, addr1.address);
-
-  //     await expect(campaign.finalizeRequest(0)).to.be.revertedWith("Not enough approvals");
-  //   });
-  // });
-
-});
+  });
+}); 
