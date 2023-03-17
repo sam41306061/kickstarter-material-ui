@@ -52,12 +52,13 @@ describe("Create Request", () => {
 
     await campaign
       .connect(owner)
-      .createRequest("Test Request", 200, addr1.address, 0);
+      .createRequest("Test Request", 200, addr1.address, );
   });
 
+  
   it("Should transfer funds and mark request as complete", async function () {
-    await campaign.connect(addr1).approverRequest(400, 1, "");
-    await campaign.connect(addr2).approverRequest(400, 2, "");
+    await campaign.connect(addr1).approverRequest(400, 1);
+    await campaign.connect(addr2).approverRequest(400, 2);
 
     const initialBalance = await ethers.provider.getBalance(addr1.address);
     await campaign.connect(owner).finalizeRequest(0);
@@ -74,12 +75,13 @@ describe("Create Request", () => {
     });
   });
 
-  // it("Should revert if not enough approvers", async function () {
-  //   await campaign.connect(addr1).approverRequest(400, 1, "");
-  //   await expect(campaign.connect(owner).finalizeRequest(0)).to.be.revertedWith(
-  //     "Request has not been approved by enough approvers"
-  //   );
-  // });
+  it("Should revert if not enough approvers", async function () {
+    await campaign.connect(addr1).approverRequest(400, 1, "");
+    await expect(campaign.connect(owner).finalizeRequest(0)).to.be.revertedWith(
+      "Request has not been approved by enough approvers"
+    );
+  });
+  
   // it("Should revert if request is already complete", async ()=> {
 
   // });

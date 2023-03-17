@@ -56,7 +56,7 @@ contract Campaign {
         newRequest.complete = false;
         newRequest.approvalCount = 0;
         requests.push(newRequest);
-        return requests.length - 1;
+        return requests.length; 
     }
 
     // modifer helps this fuction
@@ -65,7 +65,8 @@ contract Campaign {
         uint _approvalCount
     ) public {
         require(_value <= address(this).balance, "Not enough funds available");
-        Request storage request = requests[requests.length - 1];
+        require(requests.length >= 0, "No requests available");
+        Request storage request = requests[requests.length];
         request.approvalCount = _approvalCount;
     }
 
