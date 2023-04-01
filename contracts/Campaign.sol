@@ -45,18 +45,18 @@ contract Campaign {
     function createRequest(
         string memory _description,
         uint _value,
-        address payable _recipient,
-        uint _id
-    ) public returns (uint) {
-        Request memory newRequest = requests[requests.length];
-        newRequest.id = _id;
-        newRequest.description = _description;
-        newRequest.value = _value;
-        newRequest.recipient = _recipient;
-        newRequest.complete = false;
-        newRequest.approvalCount = 0;
+        address payable _recipient
+    ) public onlyManager {
+        require(approvers[msg.sender], "Only approvers can create requests");
+        Request memory newRequest = Request({
+            id: requests.length,
+            description: _description,
+            value: _value,
+            recipient: _recipient,
+            complete: false,
+            approvalCount: 0
+        });
         requests.push(newRequest);
-        return requests.length; 
     }
 
     // modifer helps this fuction
