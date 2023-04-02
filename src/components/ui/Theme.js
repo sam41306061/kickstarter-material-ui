@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/system";
+import { createTheme } from "@mui/material";
 
 // Define the colors
 const kickWhite = '#ffffff';
@@ -34,7 +34,7 @@ const theme = createTheme({
       footerButtonColor: secKickWhite2,
     },
     primary: {
-      main: kickGreen,
+      main: kickWhite,
       light: kickPurp,
       dark: kickGrey,
     },
