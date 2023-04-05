@@ -4,7 +4,8 @@ import React from "react";
 import Header from "./components/ui/Header";
 import theme from "./components/ui/Theme";
 
-// pages
+// comp
+import CampaignList from './components/CampaignList';
 
 
 // boiler plate materialui
@@ -14,7 +15,9 @@ function App() {
   return (
   <ThemeProvider theme={theme}>
     <Header/>
+    <CampaignList></CampaignList>
   </ThemeProvider>
+
  
   );
 }

@@ -5,7 +5,7 @@ const kickWhite = '#ffffff';
 const kickBlack = '#000000';
 const kickGrey = '#656969';
 const kickGreen1 = '##87c442';
-const kickGreen = '#037362';
+const kickGreen = '#05ce78';
 const kickBlue = '#0000ee';
 const kickPurp = '#5555ff';
 
@@ -44,6 +44,15 @@ const theme = createTheme({
       dark: secKickGrey,
     },
   },
+  typography: {
+    topTitle:{
+      fontFamily: "Rubik Bubbles",
+      textTransform: "none",
+      fontWeight: 900,
+      color: kickGreen,
+      fontSize: "2rem"
+    }
+  }
 });
 
 export default theme;

@@ -4,6 +4,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import useScrollTrigger from '@mui/material/useScrollTrigger';
+import { makeStyles } from "@mui/material";
 
 
 // scroll function
@@ -22,12 +23,24 @@ function ElevationScroll(props) {
   });
 }
 
+// theme styling 
+const useStyles = makeStyles(theme =>({
+  heroTextContainer: {
+    minWidth: "21.5em",
+    marginLeft: "1em",
+    [theme.breakpoints.down("xs")]: {
+      marginLeft: 0
+    }
+  },
+}))
+
 function Header() {
+  const classes = useStyles();
   return (
-    <ElevationScroll>
-      <AppBar position="static" color="primary">
+    <ElevationScroll container justify="flex-end" alignItems="center" direction="row">
+      <AppBar position="static" color="primary" sm className={classes.heroTextContainer}>
         <Toolbar>
-          <Typography variant="h6" to="/" sx={{ flexGrow: 1 }}>
+          <Typography variant="topTitle" to="/" sx={{ flexGrow: 1 }}>
             CrowdCoin
           </Typography>
           <Button to="/campaigns" sx={{ mr: 2 }} color="inherit">
