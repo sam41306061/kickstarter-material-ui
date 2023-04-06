@@ -45,13 +45,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    topTitle:{
-      fontFamily: "Rubik Bubbles",
-      textTransform: "none",
-      fontWeight: 900,
-      color: kickGreen,
-      fontSize: "2rem"
-    }
+   
   }
 });
 

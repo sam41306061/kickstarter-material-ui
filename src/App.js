@@ -5,7 +5,8 @@ import Header from "./components/ui/Header";
 import theme from "./components/ui/Theme";
 
 // comp
-import CampaignList from './components/CampaignList';
+// import CampaignList from './components/CampaignList';
+import LandingPage from "./components/LandingPage";
 
 
 // boiler plate materialui
@@ -15,7 +16,7 @@ function App() {
   return (
   <ThemeProvider theme={theme}>
     <Header/>
-    <CampaignList></CampaignList>
+    <LandingPage></LandingPage>
   </ThemeProvider>
 
  

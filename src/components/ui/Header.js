@@ -3,19 +3,16 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import useScrollTrigger from '@mui/material/useScrollTrigger';
-import { makeStyles } from "@mui/material";
+import useScrollTrigger from "@mui/material/useScrollTrigger";
+import { useTheme, makeStyles } from "@mui/material/styles";
+import { useMediaQuery } from "@mui/material";
 
 
-// scroll function
 function ElevationScroll(props) {
   const { children } = props;
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
   const trigger = useScrollTrigger({
     disableHysteresis: true,
-    threshold: 0
+    threshold: 0,
   });
 
   return React.cloneElement(children, {
@@ -23,32 +20,46 @@ function ElevationScroll(props) {
   });
 }
 
-// theme styling 
-const useStyles = makeStyles(theme =>({
-  heroTextContainer: {
-    minWidth: "21.5em",
-    marginLeft: "1em",
-    [theme.breakpoints.down("xs")]: {
-      marginLeft: 0
-    }
-  },
-}))
-
 function Header() {
-  const classes = useStyles();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const headingStyle = {
+    topTitle:{
+      fontFamily: "Gotham Bold",
+      textTransform: "none",
+      fontWeight: 400,
+      color: theme.kickGreen,
+      fontSize: "2rem",
+      flexGrow: 1
+    },
+    newCamps:{
+
+    }
+
+  }
+  
   return (
-    <ElevationScroll container justify="flex-end" alignItems="center" direction="row">
-      <AppBar position="static" color="primary" sm className={classes.heroTextContainer}>
-        <Toolbar>
-          <Typography variant="topTitle" to="/" sx={{ flexGrow: 1 }}>
+    <ElevationScroll>
+      <AppBar position="fixed" color="primary">
+        <Toolbar sx={{ display: "flex", justifyContent: isMobile ? "space-between" : "flex-end" }}>
+          <Typography  variant="h2" sx= {headingStyle.topTitle} to="/">
             CrowdCoin
           </Typography>
-          <Button to="/campaigns" sx={{ mr: 2 }} color="inherit">
-            Campaigns
-          </Button>
-          <Button to="/campaigns/new" variant="contained" color="secondary">
-            New Campaign
-          </Button>
+          {isMobile ? (
+            <Button  to="/campaigns/new" variant="contained" color="secondary">
+              New
+            </Button>
+          ) : (
+            <>
+              <Button to="/campaigns" sx={{ mr: 2 }} color="inherit">
+                Campaigns
+              </Button>
+              <Button to="/campaigns/new" variant="contained" color="secondary">
+                New Campaign
+              </Button>
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </ElevationScroll>
