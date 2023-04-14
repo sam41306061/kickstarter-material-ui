@@ -4,8 +4,9 @@ import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
-import { useTheme, makeStyles } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 import { useMediaQuery } from "@mui/material";
+import { Link } from "react-router-dom";
 
 
 function ElevationScroll(props) {
@@ -20,7 +21,10 @@ function ElevationScroll(props) {
   });
 }
 
-function Header() {
+
+
+
+ export default function Header() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -34,7 +38,18 @@ function Header() {
       flexGrow: 1
     },
     newCamps:{
-
+      fontSize: "4rem",
+      fontWeight: 400,
+      color: theme.kickGreen,
+      [theme.breakpoints.down("md")]: {
+        fontSize: "3rem",
+      },
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "2.5rem",
+      },
+      [theme.breakpoints.down("xs")]: {
+        fontSize: "2rem",
+      },
     }
 
   }
@@ -47,15 +62,15 @@ function Header() {
             CrowdCoin
           </Typography>
           {isMobile ? (
-            <Button  to="/campaigns/new" variant="contained" color="secondary">
+            <Button component={Link}  to="./create" variant="contained" color="secondary">
               New
             </Button>
           ) : (
-            <>
-              <Button to="/campaigns" sx={{ mr: 2 }} color="inherit">
+            <> 
+              <Button component={Link} to="/" sx={{ mr: 2 }} color="inherit">
                 Campaigns
               </Button>
-              <Button to="/campaigns/new" variant="contained" color="secondary">
+              <Button component={Link} to="./create"  variant="contained" color="secondary">
                 New Campaign
               </Button>
             </>
@@ -66,4 +81,4 @@ function Header() {
   );
 }
 
-export default Header;
+

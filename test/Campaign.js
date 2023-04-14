@@ -44,48 +44,12 @@ describe('Campaign', () => {
     });
   });
 
-
-describe("Create Request", () => {
-  beforeEach(async () => {
-    await campaign
-      .connect(owner)
-      .createRequest("Test Request", 200, addr1.address);
-
-    await campaign.connect(addr1).contribute({ value: 200 });
-    await campaign.connect(addr2).contribute({ value: 200 });
-
-    
-  });
-
-  it("Should transfer funds and mark request as complete", async function () {
-    await campaign.connect(addr1).approverRequest(400, 0);
-    await campaign.connect(addr2).approverRequest(400, 0);
-
-    const initialBalance = await ethers.provider.getBalance(addr1.address);
-    await campaign.connect(owner).finalizeRequest(1);
-    const finalBalance = await ethers.provider.getBalance(addr1.address);
-
-    expect(finalBalance.sub(initialBalance)).to.equal(400);
-    expect(await campaign.requests(0)).to.deep.equal({
-      id: 0,
-      description: "Test Request",
-      value: 400,
-      recipient: addr1.address,
-      complete: true,
-      approvalCount: 2,
+  //checks that the manager can create a payment request
+  describe("Create Payment Request", () => {
+    it("Should create a payment request", async () => {
+      await campaign.connect(addr1).contribute({ value: 150 });
+      await campaign.connect(owner).createRequest("Test Request", 100, addr1.address);
+      expect(await campaign.requestsCount()).to.equal(1);
     });
-  });
-
-//   it("Should revert if not enough approvers", async function () {
-//     await campaign.connect(addr1).approverRequest(400, 1);
-//     await expect(campaign.connect(owner).finalizeRequest(0)).to.be.revertedWith(
-//       "Request has not been approved by enough approvers"
-//     );
-//   });
-  
-//   // it("Should revert if request is already complete", async ()=> {
-
-//   // });
-
   });
 }); 

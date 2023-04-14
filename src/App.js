@@ -1,25 +1,29 @@
 import React from "react";
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 
-// ui compoentns 
+// ui components
 import Header from "./components/ui/Header";
 import theme from "./components/ui/Theme";
 
-// comp
-// import CampaignList from './components/CampaignList';
+// components
 import LandingPage from "./components/LandingPage";
+import CreateCampaign from "./components/CreateCampaign";
 
-
-// boiler plate materialui
+// boilerplate materialui
 import { ThemeProvider } from "@mui/material";
 
 function App() {
   return (
-  <ThemeProvider theme={theme}>
-    <Header/>
-    <LandingPage></LandingPage>
-  </ThemeProvider>
-
- 
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Header/>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/create" element={<CreateCampaign />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
+
 export default App;

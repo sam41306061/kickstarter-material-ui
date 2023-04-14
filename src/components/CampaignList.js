@@ -1,9 +1,11 @@
 import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
-import Box from "@mui/material/Box";
+
 import Container from "@mui/material/Container";
 import { DataGrid } from '@mui/x-data-grid';
 import { useTheme } from "@mui/material/styles";
+import { Button} from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function CampaignList() {
   const theme = useTheme();
@@ -15,7 +17,16 @@ export default function CampaignList() {
     [theme.breakpoints.down("xs")]: {
       marginTop: "2em",
     },
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#efefef",
+    height: "60vh",
+    padding: "2rem",
   };
+  
+  
   const columns = [
     {feild: 'id', headerName:'Open Campaigns', width: 90},
     {
@@ -32,7 +43,6 @@ export default function CampaignList() {
     },
     {
       field: 'age',
-      headerName: 'Age',
       type: 'number',
       width: 110,
       editable: true,
@@ -54,8 +64,7 @@ export default function CampaignList() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="sm" sx={mainContainerStyle}>
-        <Box sx={{ bgcolor: "#efefef", height: "100vh" }}> 
+      <Container sx={mainContainerStyle}>
           <DataGrid
           rows={rows}
           columns={columns}
@@ -65,9 +74,7 @@ export default function CampaignList() {
           disableSelectionOnClick
           experimentalFeatures={{ newEditingApi: true }}
         />
-        </Box>
-        
-      </Container>
+        <Button component={Link} to="./create"  variant="contained" color="primary" sx={{margin: "1em"}}> Create Campaign </Button> </Container>
     </React.Fragment>
   );
 }
