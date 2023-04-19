@@ -24,6 +24,7 @@ export default function CampaignList() {
     backgroundColor: "#efefef",
     height: "60vh",
     padding: "2rem",
+   
   };
   
   
@@ -74,7 +75,15 @@ export default function CampaignList() {
           disableSelectionOnClick
           experimentalFeatures={{ newEditingApi: true }}
         />
-        <Button component={Link} to="./create"  variant="contained" color="primary" sx={{margin: "1em"}}> Create Campaign </Button> </Container>
+        <Button component={Link} to="./create" 
+        variant="contained" 
+        color="primary" 
+        sx={{margin: "1em"}}> Create Campaign</Button> 
+        <Button component={Link} to="./create/campdash" 
+        variant="contained" 
+        color="primary" 
+        sx={{margin: "1em"}}> Existing Campaigns</Button> 
+        </Container>
     </React.Fragment>
   );
 }

@@ -1,19 +1,16 @@
 import React, { useState } from "react";
 import { TextField, Button, Typography } from "@mui/material";
-import { Container, Box } from '@mui/system';
+import { Container, Box } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
 
 export default function CreateCampaign() {
-
   const [minimumContribution, setMinimumContribution] = useState("");
 
   const handleMinimumContributionChange = (event) => {
     setMinimumContribution(event.target.value);
   };
 
-  const handleCreateClick = () => {
-    // Handle create button click here
-  };
+  const handleCreateClick = () => {};
 
   const theme = useTheme();
 
@@ -42,7 +39,7 @@ export default function CreateCampaign() {
   return (
     <Container maxWidth="xl" sx={mainContainerStyle}>
       <Box sx={boxStyle}>
-      <Typography variant="h5">Create a Campaign</Typography>
+        <Typography variant="h5">Create a Campaign</Typography>
         <TextField
           id="minimum-contribution"
           label="Minimum Contribution (Wei)"
@@ -55,7 +52,7 @@ export default function CreateCampaign() {
           variant="contained"
           color="primary"
           onClick={handleCreateClick}
-          sx={{ marginTop: "1.75em", width: "12rem", background:"#87c442" }}
+          sx={{ marginTop: "1.75em", width: "12rem", background: "#87c442" }}
         >
           Create
         </Button>
