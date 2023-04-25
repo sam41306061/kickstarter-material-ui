@@ -1,11 +1,12 @@
 import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 
-import Container from "@mui/material/Container";
 import { DataGrid } from '@mui/x-data-grid';
 import { useTheme } from "@mui/material/styles";
-import { Button} from "@mui/material";
+import { Button, Container} from "@mui/material";
 import { Link } from "react-router-dom";
+
+import {useState, useEffect} from "react";
 
 export default function CampaignList() {
   const theme = useTheme();
@@ -26,8 +27,6 @@ export default function CampaignList() {
     padding: "2rem",
    
   };
-  
-  
   const columns = [
     {feild: 'id', headerName:'Open Campaigns', width: 90},
     {
@@ -62,6 +61,11 @@ export default function CampaignList() {
     { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
   ]
 
+ // const CONTRACT_ADDRESS = "CONTRACT_ADDRESS";
+
+ // const CONTRACT_ABI = [...];
+
+  // useEffect code goes here. 
   return (
     <React.Fragment>
       <CssBaseline />
