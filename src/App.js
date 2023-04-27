@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 // ui components
@@ -12,14 +12,40 @@ import CampDashboard from "./components/CampDashboard";
 import PendingRequests from "./components/PendingRequests";
 import CreateRequest from "./components/CreateRequests";
 
+// redux related imports
+import { useDispatch } from "react-redux";
+import * as ethers from "ethers";
+import config from "./config";
 
-
-
-
-// boilerplate materialui
+// styling
 import { ThemeProvider } from "@mui/material";
 
+
 function App() {
+  const dispatch = useDispatch();
+
+  // connnect to web3, metamask and etherum test net 
+
+  const loadBlockchainData = async () => {
+    // load account
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    console.log(accounts[0]);
+
+    // connect ethers to blockchain
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    store.dispatch({type:'PROVIDER_LOADED', connection: provider})
+    const {childId} = await provider.getNetwork();
+    console.log(childId);
+
+    // campagin smart contract
+    const campaignContract = new ethers.Contract(config[childId].campaignContractAddress, config[childId].campaignContractABI, provider);
+    console.log(campaignContract);
+  }
+  useEffect(() => {
+    loadBlockchainData();
+  });
+
+
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>

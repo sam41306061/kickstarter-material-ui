@@ -67,6 +67,9 @@ function ElevationScroll(props) {
             </Button>
           ) : (
             <> 
+            <Button sx={{ mr: 2 }} color="inherit">
+                Connect your Wallet
+              </Button>
               <Button component={Link} to="/" sx={{ mr: 2 }} color="inherit">
                 Campaigns
               </Button>
