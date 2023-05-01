@@ -1,16 +1,23 @@
 async function main() {
-    console.log("Preparing to deploy...")
-//fetch contract
-const Campaign = await ethers.getContractFactory("Campaign");
+  const [deployer] = await ethers.getSigners();
+  console.log("Deploying contracts with the account:", deployer.address);
 
-// fetch accounts
-const accounts = await ethers.getSigners();
-console.log(`Accounts fetched:\n${accounts[0].address}\n${accounts[1].address}\n`)
+  const campaignNames = ["Campaign 1", "Campaign 2", "Campaign 3"];
+    const campaignFundingGoals = [100, 200, 300]; // in ether
 
-//deploy contract
-const campaign = await Campaign.deploy(accounts[0].address, accounts[1].address,10);
-await campaign.deploy();
-console.log(`Contract deployed to address: ${campaign.address}`);
+    for (let i = 0; i < campaignNames.length; i++) {
+      const Campaign = await ethers.getContractFactory("Campaign");
+      const campaign = await Campaign.deploy(campaignFundingGoals[i], deployer.address);
+      console.log(`Deploying ${campaignNames[i]}...`);
+      await campaign.deployed();
+      console.log(`${campaignNames[i]} deployed at: ${campaign.address}`);
+  }
+
+  // const Campaign = await ethers.getContractFactory("Campaign");
+  // const campaign = await Campaign.deploy(100, deployer.address); // amount of for camp, deployer address 
+
+  console.log("Campaign contract address:", campaign.address);
+}
 
 main()
   .then(() => process.exit(0))
