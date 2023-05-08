@@ -9,6 +9,9 @@ import { useMediaQuery } from "@mui/material";
 import { Link } from "react-router-dom";
 
 
+// wagmi wallet connect
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+
 function ElevationScroll(props) {
   const { children } = props;
   const trigger = useScrollTrigger({
@@ -25,6 +28,17 @@ function ElevationScroll(props) {
 
 
  export default function Header() {
+ 
+
+// wagmi hooks
+const {activeConnector} = useConnect();
+const { disconnect } = useDisconnect();
+const { address } = useAccount();
+
+
+
+
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -57,27 +71,49 @@ function ElevationScroll(props) {
   return (
     <ElevationScroll>
       <AppBar position="fixed" color="primary">
-        <Toolbar sx={{ display: "flex", justifyContent: isMobile ? "space-between" : "flex-end" }}>
-          <Typography  variant="h2" sx= {headingStyle.topTitle} to="/">
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: isMobile ? "space-between" : "flex-end",
+          }}
+        >
+          <Typography variant="h2" sx={headingStyle.topTitle} to="/">
             CrowdCoin
           </Typography>
+          {!activeConnector ? (
+            <Button onClick={useConnect} sx={{ mr: 2 }} color="inherit">
+              Connect your Wallet
+            </Button>
+          ) : (
+            <Button sx={{ mr: 2 }} color="inherit" onClick={disconnect}>
+              Disconnect
+            </Button>
+          )}
           {isMobile ? (
-            <Button component={Link}  to="./create" variant="contained" color="secondary">
+            <Button
+              component={Link}
+              to="./create"
+              variant="contained"
+              color="secondary"
+            >
               New
             </Button>
           ) : (
-            <> 
-            <Button sx={{ mr: 2 }} color="inherit">
-                Connect your Wallet
-              </Button>
+            <>
               <Button component={Link} to="/" sx={{ mr: 2 }} color="inherit">
                 Campaigns
               </Button>
-              <Button component={Link} to="./create"  variant="contained" color="secondary">
+              <Button
+                component={Link}
+                to="./create"
+                variant="contained"
+                color="secondary"
+              >
                 New Campaign
               </Button>
             </>
           )}
+          
         </Toolbar>
       </AppBar>
     </ElevationScroll>

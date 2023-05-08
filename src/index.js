@@ -5,9 +5,13 @@ import App from "./App";
 import store from "./store/store";
 import { Provider } from "react-redux";
 
+import { WagmiConfig, createClient } from "wagmi";
+
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <WagmiConfig client={createClient()}>
+      <App />
+    </WagmiConfig>
   </Provider>,
   document.getElementById("root")
 );
