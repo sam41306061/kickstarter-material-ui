@@ -61,11 +61,8 @@ export default function CampaignList() {
     { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
   ]
 
- // const CONTRACT_ADDRESS = "CONTRACT_ADDRESS";
-
- // const CONTRACT_ABI = [...];
-
-  // useEffect code goes here. 
+  // need to add redux related code here to populate data.
+  // const [rows, setRows] = useState([]);
   return (
     <React.Fragment>
       <CssBaseline />
