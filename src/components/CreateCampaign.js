@@ -12,7 +12,7 @@ export default function CreateCampaign() {
 
   const handleCreateClick = () => {};
 
-  const theme = useTheme();
+//  const theme = useTheme();
 
   const mainContainerStyle = {
     backgroundColor: "#ffffff",
@@ -21,7 +21,6 @@ export default function CreateCampaign() {
     alignItems: "center",
     justifyContent: "center",
     height: "100vh",
-    padding: "2em",
   };
 
   const boxStyle = {

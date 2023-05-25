@@ -59,7 +59,7 @@ export default function CampaignList() {
     },
   ]
   const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
+    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35, key: 1 },
   ]
 
   return (
