@@ -20,14 +20,26 @@ export const provider = (state = {}, action) => {
     }
   }
 
-  export const campaign = (state = {loaded: false, contract: null}, action) => {
+  export const campaign = (state = {loaded: false, contracts:[] }, action) => {
     switch (action.type) {
-      case 'CAMPAIGN_LOADED':
+      case 'CAMPAIGN_LOADED_1':
         return {
             ...state, 
             loaded: true,
-            contract: action.campaign
+            contracts: [...state.contracts, action.contract]
         }
+        case 'CAMPAIGN_LOADED_2':
+          return {
+              ...state, 
+              loaded: true,
+              contracts: [...state.contracts, action.contract]
+          }
+          case 'CAMPAIGN_LOADED_3':
+          return {
+              ...state, 
+              loaded: true,
+              contracts: [...state.contracts, action.contract]
+          }
       default:
         return state
     }

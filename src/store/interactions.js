@@ -27,12 +27,17 @@ export const loadAccounts = async (dispatch) => {
 }
 
 
-export const loadCampaign = async (provider, address, dispatch) => {
-  let campaign
-  
-  campaign = new ethers.Contract(address, CAMPAIGN_ABI, provider);
+export const loadCampaigns = async (provider, addresses, dispatch) => {
+  let campaign;
 
-  dispatch({type: 'CAMPAIGN_LOADED', campaign})
+  campaign = new ethers.Contract(addresses[0], CAMPAIGN_ABI, provider);
+  dispatch({ type: 'CAMPAIGN_LOADED_1', campaign });
+
+  campaign = new ethers.Contract(addresses[1], CAMPAIGN_ABI, provider);
+  dispatch({ type: 'CAMPAIGN_LOADED_2', campaign });
+
+  campaign = new ethers.Contract(addresses[2], CAMPAIGN_ABI, provider);
+  dispatch({ type: 'CAMPAIGN_LOADED_3', campaign });
 
   return campaign;
 }
