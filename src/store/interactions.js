@@ -16,7 +16,7 @@ export const loadNetwork = async (provider,dispatch) => {
   return chainId;
 }
 
-// campaign address
+// account address
 export const loadAccounts = async (dispatch) => {
   const accounts = await window.ethereum.request({method: 'eth_requestAccounts'});
   const account = ethers.utils.getAddress(accounts[0]);
