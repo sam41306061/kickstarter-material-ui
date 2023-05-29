@@ -26,9 +26,10 @@ export const provider = (state = {}, action) => {
         return {
             ...state, 
             loaded: true,
-            contract: action.contract,
+            contract: action.campaign
         }
       default:
         return state
     }
   }
+  

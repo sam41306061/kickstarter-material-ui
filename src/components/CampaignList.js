@@ -73,6 +73,7 @@ export default function CampaignList() {
           rowsPerPageOptions={[5]}
           checkboxSelection
           disableSelectionOnClick
+          key={rows.id}
           experimentalFeatures={{ newEditingApi: true }}
         />
         <Button component={Link} to="./create" 

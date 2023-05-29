@@ -7,7 +7,7 @@ import { provider, campaign }  from './reducers';
 
 const reducers = combineReducers({
     provider,
-    campaign
+
 });
 
 const initalState = {};
