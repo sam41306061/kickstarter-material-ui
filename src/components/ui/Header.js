@@ -61,6 +61,9 @@ function ElevationScroll(props) {
           <Typography  variant="h2" sx= {headingStyle.topTitle} to="/">
             CrowdCoin
           </Typography>
+          <Button sx={{ mr: 2 }} color="inherit">
+              Connect your Wallet
+            </Button>
           {isMobile ? (
             <Button component={Link}  to="./create" variant="contained" color="secondary">
               New
