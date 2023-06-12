@@ -1,5 +1,6 @@
 import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
+import { useSelector } from "react-redux";
 
 import Container from "@mui/material/Container";
 import { DataGrid } from '@mui/x-data-grid';
@@ -9,6 +10,8 @@ import { Link } from "react-router-dom";
 
 export default function CampaignList() {
   const theme = useTheme();
+  const campSelector = useSelector(state => state.campaigns); 
+
   const mainContainerStyle = {
     marginTop: "5em",
     [theme.breakpoints.down("md")]: {
@@ -58,9 +61,7 @@ export default function CampaignList() {
         `${params.row.firstName || ''} ${params.row.lastName || ''}`,
     },
   ]
-  const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35, key: 1 },
-  ]
+  const rows = {campSelector};
 
   return (
     <React.Fragment>

@@ -15,6 +15,11 @@ export const provider = (state = {}, action) => {
                 ...state,
                 campaign: action.account,
             }
+          case 'ETHERS_BALANCE_LOADED':
+            return {
+                ...state,
+                balance: action.balance,
+            }
       default:
         return state
     }

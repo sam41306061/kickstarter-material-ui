@@ -8,60 +8,114 @@ const wait = (seconds) => {
 };
 
 async function main() {
-  // Fetch all the deployed addresses
+  // fecth all the deployed addresses
   const signers = await ethers.getSigners();
 
-  // Define campaign addresses
-  const campaignAddresses = [
-    "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-    "0x8464135c8F25Da09e49BC8782676a84730C318bC",
-    "0x663F3ad617193148711d28f5334eE4Ed07016602",
-  ];
+  // Fetch network
+  // const { chainId } = await ethers.provider.getNetwork()
+  // console.log("Using chainId:", chainId);
 
   // Fetch deployed campaigns
-  const campaigns = await Promise.all(
-    campaignAddresses.map((address) =>
-      ethers.getContractAt("Campaign", address)
-    )
+  const Campaign1 = await ethers.getContractAt(
+    "Campaign",
+    "0x5FbDB2315678afecb367f032d93F642f64180aa3"
   );
+  console.log(`Campign 1 as fetched at: ${Campaign1.address}`);
 
-  campaigns.forEach((campaign, index) => {
-    console.log(`Campaign ${index + 1} fetched at: ${campaign.address}`);
-  });
+  const Campaign2 = await ethers.getContractAt(
+    "Campaign",
+    "0x8464135c8F25Da09e49BC8782676a84730C318bC"
+  );
+  console.log(`Campign 2 as fetched at: ${Campaign2.address}`);
+
+  const Campaign3 = await ethers.getContractAt(
+    "Campaign",
+    "0x663F3ad617193148711d28f5334eE4Ed07016602"
+  );
+  console.log(`Campign 3 as fetched at: ${Campaign3.address}\n`);
 
   const owner = signers[0];
-  const contributors = signers.slice(1, 4); // Use the first 3 signers as contributors
-  const amount = contribution(100);
+  const contributer = signers[1];
+  let amount = contribution(100);
 
   let transaction, result;
+  transaction = await Campaign1.contribute({ value: amount });
+  console.log(
+    `Contributing to Campaign 1 with a total of  ${amount} from ${contributer.address} to ${owner.address} campaign\n`
+  );
 
-  // Create multiple manager requests for different campaigns
-  for (let i = 0; i < campaigns.length; i++) {
-    const campaign = campaigns[i];
-    transaction = await campaign.connect(owner).createRequest(
-      `Manager request ${i + 1}`,
-      amount,
-      owner.address
-    );
-    result = await transaction.wait();
-    console.log(
-      `Created manager request for ${owner.address} in campaign ${i + 1}\n`
-    );
-  }
+  /////////////////////////////////////////////////////////////
+  // contributions to all campaigns
+  //
+  const contributer1 = signers[2];
+  const contributer2 = signers[3];
+  amount = contribution(200);
 
-  // Make contributions to multiple campaigns
-  for (let i = 0; i < campaigns.length; i++) {
-    const campaign = campaigns[i];
-    const contributor = contributors[i % contributors.length];
-    transaction = await campaign.connect(contributor).contribute({
-      value: amount,
-    });
-    await transaction.wait();
-    console.log(
-      `Contributed ${amount} from ${contributor.address} to campaign ${
-        i + 1
-      }\n`
-    );
+  //contribute to campaign 2 approved by contributer1
+  transaction = await Campaign2.connect(contributer1).contribute({
+    value: amount,
+  });
+  await transaction.wait();
+  console.log(
+    `Contributed ${amount} from \n ${owner.address} \n to ${Campaign2.address} campaign\n`
+  );
+
+  //contribute to campaign 3 approved by contributer2
+  transaction = await Campaign3.connect(contributer2).contribute({
+    value: amount,
+  });
+  await transaction.wait();
+  console.log(
+    `Contributed ${amount} from \n ${owner.address}\n to ${Campaign3.address} campaign\n`
+  );
+
+  //contribute to campaign 1 approved by contributer1
+  transaction = await Campaign1.connect(contributer1).contribute({
+    value: amount,
+  });
+  await transaction.wait();
+  console.log(
+    `Contributed ${amount} from \n  ${owner.address}  \n to ${Campaign1.address} campaign\n`
+  );
+
+  /////////////////////////////////////////////////////////////
+  //Seed create a request
+  //
+
+  // owner create a request for Campaign 1
+  transaction = await Campaign1.connect(owner).createRequest(
+    "Buy a car",
+    contribution(100),
+    owner.address
+  );
+  result = await transaction.wait();
+  console.log(
+    `Created request for ${owner.address} to ${Campaign1.address} campaign\n`
+  );
+
+  // contributors deny request for Campaign 1
+  // requestId = result.events[0].args.requestId;
+  // console.log(`requestId: ${requestId}`);
+  // transaction = await Campaign1.connect(contributer1).denyRequest(requestId);
+  // result = await transaction.wait();
+  // console.log(`Denied request for ${contributer1.address}\n`);
+
+  /////////////////////////////////////////////////////////////
+  // Seed
+  //
+
+/////////////////////////////////////////////////////////////
+  //Multiple Contributions 
+  //
+// campagin 1 approved by contributer2 10 times 
+for ( let i = 0; i < 10; i++) {
+  transaction = await Campaign1.connect(contributer2).contribute({
+    value: amount,
+  });
+  await transaction.wait();
+  console.log(
+    `Contributed ${amount} from \n  ${owner.address}  \n to ${Campaign1.address} campaign\n`
+  );
   }
 }
 

@@ -17,11 +17,16 @@ export const loadNetwork = async (provider,dispatch) => {
 }
 
 // account address
-export const loadAccounts = async (dispatch) => {
+export const loadAccounts = async (provider, dispatch) => {
   const accounts = await window.ethereum.request({method: 'eth_requestAccounts'});
   const account = ethers.utils.getAddress(accounts[0]);
 
-  dispatch({type: 'ACCOUNTS_LOADED',account})
+  dispatch({type: 'ACCOUNTS_LOADED', account})
+
+  let balance = await provider.getBalance(account);
+  balance = ethers.utils.formatEther(balance);
+
+dispatch({type: 'ETHER_BALANCE_LOADED', balance})
 
   return account;
 }

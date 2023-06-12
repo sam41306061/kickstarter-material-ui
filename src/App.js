@@ -35,17 +35,20 @@ function App() {
   const dispatch = useDispatch();
   // load block chain
   const loadBlockchainData = async () => {
-    await loadAccounts(dispatch);
-
+    
     // connect ethers to the blockchain
     const provider = loadProvider(dispatch);
     const chainId = await loadNetwork(provider, dispatch);
 
-    // campgain contract instance
+    // fetch current account & balance from metamask
+    await loadAccounts(provider, dispatch);
+
+    // campgain contract instances
     const camp1 = config[chainId].campaign1;
     const camp2 = config[chainId].campaign2;
     const camp3 = config[chainId].campaign3;
 
+    // load campaigns contracts 
     await loadCampaigns(provider,[camp1.address,camp2.address,camp3.address], dispatch);
   };
 
