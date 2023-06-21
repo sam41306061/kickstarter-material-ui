@@ -7,8 +7,11 @@ import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { useTheme } from "@mui/material/styles";
 import { useMediaQuery } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 
+
+// sticky header effect 
 function ElevationScroll(props) {
   const { children } = props;
   const trigger = useScrollTrigger({
@@ -24,9 +27,14 @@ function ElevationScroll(props) {
 
 
 
+
+
  export default function Header() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  // const dispatch = useDispatch();
+  const account = useSelector((state) => state.provider.campaign);
 
   const headingStyle = {
     topTitle:{
@@ -38,7 +46,7 @@ function ElevationScroll(props) {
       flexGrow: 1
     },
     newCamps:{
-      fontSize: "4rem",
+      fontSize: "15px",
       fontWeight: 400,
       color: theme.kickGreen,
       [theme.breakpoints.down("md")]: {
@@ -64,6 +72,7 @@ function ElevationScroll(props) {
           <Button sx={{ mr: 2 }} color="inherit">
               Connect your Wallet
             </Button>
+            <Typography  sx= {headingStyle.newCamps} to="/">{account}</Typography>
           {isMobile ? (
             <Button component={Link}  to="./create" variant="contained" color="secondary">
               New
