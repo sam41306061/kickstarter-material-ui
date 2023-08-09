@@ -28,9 +28,6 @@ import {
 // boilerplate materialui
 import { ThemeProvider } from "@mui/material";
 
-
-
-
 function App() {
   const dispatch = useDispatch();
   // load block chain
@@ -38,10 +35,18 @@ function App() {
     
     // connect ethers to the blockchain
     const provider = loadProvider(dispatch);
+    // Fetch current network's chainId (e.g. hardhat: 31337, kovan: 42)
     const chainId = await loadNetwork(provider, dispatch);
 
-    // fetch current account & balance from metamask
-    await loadAccounts(provider, dispatch);
+    // Reload page when network changes
+    window.ethereum.on('chainChanged', () => {
+      window.location.reload()
+    });
+
+  // Fetch current account & balance from Metamask when changed
+    window.ethereum.on('accountsChanged', () => {
+      loadAccounts(provider, dispatch)
+    })
 
     // campgain contract instances
     const camp1 = config[chainId].campaign1;

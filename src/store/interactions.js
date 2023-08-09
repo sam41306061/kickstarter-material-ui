@@ -31,12 +31,15 @@ dispatch({type: 'ETHER_BALANCE_LOADED', balance})
   return account;
 }
 
+// ------------------------------------------------------------------------------
+// LOAD ALL Campaigns
 
 export const loadCampaigns = async (provider, addresses, dispatch) => {
   let campaign;
 
   campaign = new ethers.Contract(addresses[0], CAMPAIGN_ABI, provider);
-  dispatch({ type: 'CAMPAIGN_LOADED_1', campaign });
+  const campaignData1 = await campaign.getData()
+  dispatch({ type: 'CAMPAIGN_LOADED_1', contract: campaignData1 });
 
   campaign = new ethers.Contract(addresses[1], CAMPAIGN_ABI, provider);
   dispatch({ type: 'CAMPAIGN_LOADED_2', campaign });
@@ -46,3 +49,19 @@ export const loadCampaigns = async (provider, addresses, dispatch) => {
 
   return campaign;
 }
+// ------------------------------------------------------------------------------
+// LOAD ALL ORDERS MADE 
+export const loadOrders = async (provider, campaign, dispatch) => {
+
+  const block = await provider.getBlockNumber();
+
+  const orders= await campaign.queryFilter('Order', 0, block);
+  const allOrders = orders.map(event => event.args)
+  const balance = await provider.getBalance(campaign.address); // Retrieve the balance of the contract
+
+  dispatch({type: 'ORDERS_LOADED', allOrders, balance});
+
+
+  return orders;
+}
+

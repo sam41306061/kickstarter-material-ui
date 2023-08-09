@@ -108,15 +108,17 @@ async function main() {
   //Multiple Contributions 
   //
 // campagin 1 approved by contributer2 10 times 
-for ( let i = 0; i < 10; i++) {
-  transaction = await Campaign1.connect(contributer2).contribute({
+for (let i = 0; i < 10; i++) {
+  const contributorAddress = signers[i].address;
+  const contributor = ethers.provider.getSigner(contributorAddress);
+  transaction = await Campaign1.connect(contributor).contribute({
     value: amount,
   });
   await transaction.wait();
   console.log(
     `Contributed ${amount} from \n  ${owner.address}  \n to ${Campaign1.address} campaign\n`
   );
-  }
+}
 }
 
 main()

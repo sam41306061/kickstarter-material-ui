@@ -13,7 +13,7 @@ export const provider = (state = {}, action) => {
           case 'ACCOUNTS_LOADED': 
             return {
                 ...state,
-                campaign: action.account,
+                accounts: action.account,
             }
           case 'ETHERS_BALANCE_LOADED':
             return {
@@ -49,4 +49,37 @@ export const provider = (state = {}, action) => {
         return state
     }
   }
+
+  const DEFAULT_ORDERS_STATE = {
+    loaded: false,
+    orders: []
   
+  }
+
+
+  export const submited = (state = DEFAULT_ORDERS_STATE, action) => {
+    let index, data
+
+    switch(action.type) {
+      case 'SUBMITTED_LOADED':
+        return {
+          ...state,
+          loaded: true,
+          orders: [...state.orders, action.order]
+        }
+        case 'SUBMITTED_LOADED_2':
+          return {
+            ...state,
+            loaded: true,
+            orders: [...state.orders, action.order]
+          }
+          case 'SUBMITTED_LOADED_3':
+          return {
+            ...state,
+            loaded: true,
+            orders: [...state.orders, action.order]
+          }
+      default:
+        return state
+    }
+  }

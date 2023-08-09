@@ -58,6 +58,9 @@ contract Campaign {
         });
         requests.push(newRequest);
     }
+    function balance() public view returns (uint) {
+        return address(this).balance;
+    }
 
     // modifer helps this fuction
     function approverRequest(
