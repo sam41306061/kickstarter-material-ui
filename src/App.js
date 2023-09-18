@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, {} from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useDispatch } from "react-redux";
+//import { useDispatch } from "react-redux";
 
 
 // ui components
@@ -15,15 +15,10 @@ import PendingRequests from "./components/PendingRequests";
 import CreateRequest from "./components/CreateRequests";
 
 // ethers imports
-import config from "./config.json";
+//import config from "./config.json";
 
 //redux imports
-import { 
-  loadProvider, 
-  loadNetwork, 
-  loadAccounts,
-  loadCampaign
-}from "./store/interactions";
+
 
 // boilerplate materialui
 import { ThemeProvider } from "@mui/material";
@@ -32,24 +27,8 @@ import { ThemeProvider } from "@mui/material";
 
 
 function App() {
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   // load block chain
-  const loadBlockchainData = async () => {
-    await loadAccounts(dispatch);
-
-    // connect ethers to the blockchain
-    const provider = loadProvider(dispatch);
-    const chainId = await loadNetwork(provider, dispatch);
-    
-    // campgain contract instance
-    await loadCampaign(provider, config[chainId].campaign1.address, dispatch);
-    // console.log(config[chainId].campaign1.address);
-  };
-
-  useEffect(() => {
-    loadBlockchainData();
-  });
-
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
